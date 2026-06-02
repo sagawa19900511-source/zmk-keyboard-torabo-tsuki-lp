@@ -20,11 +20,11 @@
 
         layer_0 {
             bindings = <
-&trans  &trans     &trans    &trans  &trans  &trans                                                         &trans       &trans    &trans     &trans    &trans                &trans
-&trans  &kp Q      &kp W     &kp E   &kp R   &kp T                                                          &kp Y        &kp U     &kp I      &kp O     &kp P                 &trans
-&trans  &kp A      &kp S     &kp D   &kp F   &kp G        &trans                     &trans                 &kp H        &kp J     &kp K      &kp L     &kp SEMI              &trans
-&trans  &kp Z      &kp X     &kp C   &kp V   &kp B        &mo 1                      &kp RET                &kp N        &kp M     &kp COMMA  &kp DOT   &mt RIGHT_SHIFT FSLH  &trans
-&trans  &kp LCTRL  &kp LGUI  &trans  &trans  &lt 2 SPACE  &mt LEFT_SHIFT LANGUAGE_1  &mt RSHIFT LANGUAGE_2  &lt 4 ENTER  &kp BSPC  &kp RALT   &kp RGUI  &kp RCTRL             &trans
+&trans  &trans     &trans    &trans  &trans  &trans                                                 &trans       &trans            &trans     &trans    &trans                &trans
+&trans  &kp Q      &kp W     &kp E   &kp R   &kp T                                                  &kp Y        &kp U             &kp I      &kp O     &kp P                 &trans
+&trans  &kp A      &kp S     &kp D   &kp F   &kp G        &trans                     &trans         &kp H        &kp J             &kp K      &kp L     &kp SEMI              &trans
+&trans  &kp Z      &kp X     &kp C   &kp V   &kp B        &mo 1                      &kp RET        &kp N        &kp M             &kp COMMA  &kp DOT   &mt RIGHT_SHIFT FSLH  &trans
+&trans  &kp LCTRL  &kp LGUI  &trans  &trans  &lt 2 SPACE  &mt LEFT_SHIFT LANGUAGE_1  &kp BACKSPACE  &lt 4 ENTER  &lt 2 LANGUAGE_2  &kp RALT   &kp RGUI  &kp RCTRL             &trans
             >;
         };
 
