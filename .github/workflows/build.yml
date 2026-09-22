@@ -1,6 +1,11 @@
-name: Build ZMK firmware
+name: Build Bluetooth diagnostic firmware (ZMK v0.3)
 on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
 
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
+    with:
+      archive_name: torabo-tsuki-lp-bluetooth-diagnostic-v0.3
