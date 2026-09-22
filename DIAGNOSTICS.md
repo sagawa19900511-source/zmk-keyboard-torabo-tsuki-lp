@@ -40,21 +40,18 @@ F+G の BT_CLR combo、SEL2〜4、BT_NXT、OUT_USB/OUT_BLE を削除。
 旧 OUT/BT_NXT の位置は Layer 3 で `&none` にし、意図しない下位レイヤーへの通過を防いだ。
 消去キーは登録を消す。往復試験中は Y/U を押さない。
 
-## 左 LED
+## 左 LED（通常 Status LED に復元）
 
-左の既存 Status LED を診断表示に置換した。右の LED は従来通り。
+左 Central は診断前と同じ `zmk-feature-status-led` モジュールを使用する。
+`CONFIG_ZMK_STATUS_LED=y` に戻し、モジュールの既定の起動時バッテリー表示・広告中の点滅・接続時表示を復元した。右 LED は変更していない。
 
-- **1回**点滅、約2.5秒休止、反復: Profile 0。
-- **2回**点滅、約2.5秒休止、反復: Profile 1。
-- 各点灯が短い（約100ms）: 選択 profile の BLE 接続あり。
-- 各点灯が長い（約400ms）: 接続なし。未登録と登録済み・未接続の区別はしない。
-- 切替直後は途中の点滅群が残る場合がある。次の完全な点滅群を読む。
-- Studio 等で Profile 2〜4 を選んだ場合は3〜5回。profile 容量は減らしていない。
+起動時のバッテリー表示は、取得した残量に応じて 0〜30%=1回、31〜70%=2回、71〜100%=3回。
+この回数は **Profile 番号ではない**。通常の広告中の点滅も残る。
+Profile 番号の反復点滅、短/長点灯による診断用接続状態表示、`bt_diagnostics` の制御とログフックは削除した。
+通常 LED から現在の Profile 0/1 は判別できないため、切替試験では操作した A/S と実際の入力先を記録する。
 
-点滅回数は選択状態、点灯時間は BLE 接続状態。**HID 通知購読、カーソル動作、USB/BLE 出力先の成功表示ではない**。
-左の従来の起動時バッテリー表示は診断中は出ない。
-非同期 work で表示し、接続・HID・保存状態を書き換えない。
-`BT_DIAG profile=... connected=... open=...` ログフックも追加したが、標準の3ビルドでは USB ログ出力を有効にしていない。まず LED を使用する。
+**LED 復元版への更新だけなら settings reset は不要。** 既存のペアリングを維持して通常 UF2 を上書きする。
+以下の全 reset 手順は、保存状態を消して最初から Bluetooth 診断をやり直す場合だけ使用する。
 
 ## 実機の診断手順
 
@@ -70,14 +67,14 @@ settings reset は bond、出力優先、Studio 編集・保存レイアウト�
    - **USB を Mac/Fold6 から外し、電池で試験**。給電が必要なら PC にデータ接続しない。
    - 最初の試験では Studio の設定を復元・編集せず、ソースの診断配置を使う。
 3. **Mac を Profile 0 に登録**
-   - Fold6 の Bluetooth を一時 OFF。MO(1)+A、LED 1回を確認して Mac から登録する。
+   - Fold6 の Bluetooth を一時 OFF。MO(1)+A で Profile 0 を選び、Mac から登録する。
    - 左右の文字、ボール移動、クリックを確認する。
 4. **Fold6 を Profile 1 に登録**
-   - Mac の Bluetooth は ON のまま。Fold6 を ON にして MO(1)+S、LED 2回を確認して登録する。
+   - Mac の Bluetooth は ON のまま。Fold6 を ON にして MO(1)+S で Profile 1 を選び、登録する。
    - 左右文字、移動、クリックを確認。Fold6 の OS/One UI バージョンと機器詳細に表示される入力機能の項目も記録する（名称・有無は OS による）。
 5. **SEL1 → SEL0 → SEL1**
    - 両端末の Bluetooth を ON のまま S → A → S。各回 MO(1) を保持して押し、離す。
-   - 各回数秒待ち、LED 回数、短/長、実際に入力された端末を記録する。
+   - 各回数秒待ち、押した A/S、端末の接続表示、実際に入力された端末を記録する。
    - 最初はボールを止めて2秒以上待ってから。続いてボール操作直後の AML 中でも試す。
    - 最後の選択から少なくとも2秒待って電源を切る（profile 保存の debounce）。
 6. **各端末で文字とトラックボールを確認**
@@ -85,7 +82,7 @@ settings reset は bond、出力優先、Studio 編集・保存レイアウト�
    - Mac に戻らない場合、Fold6 Bluetooth OFF → A を試して記録する。
    - その後だけキーボード再起動で変化するか確認する。再現直後の reset/CLR は証拠を消してしまう。
 
-| 操作/条件 | LED 回数 | 短/長 | 左文字 | 右文字 | 移動/クリック/scroll | 入力先 |
+| 操作/条件 | A/S 操作 | 端末の接続表示 | 左文字 | 右文字 | 移動/クリック/scroll | 入力先 |
 |---|---|---|---|---|---|---|
 | 初回 Mac SEL0 | | | | | | |
 | 初回 Fold6 SEL1 | | | | | | |
@@ -129,9 +126,9 @@ ZMK v0.3: `edf5c0814fd3ea202e43aad2d68fd32e882a518c`。
 
 | 観測 | 次に確認する対象 |
 |---|---|
-| A/S で LED 回数が変わらない | MO(1)、位置/Studio 保存内容、レイヤー優先、キーイベント。profile 選択命令が届いているか。 |
-| 1回になるが長い点灯のまま | Mac 側の旧 bond/登録、広告、再接続/認証。Fold6 OFF 条件と比較。 |
-| 1回・短い点灯でも入力しない | USB を外したか、endpoint、HID 購読/通知。BLE 接続成功と HID 成功を分ける。 |
+| A/S を押しても入力先が切り替わらない | MO(1)、位置/Studio 保存内容、レイヤー優先、キーイベント。通常 LED は profile 選択の成否を示さない。 |
+| SEL0 後も Mac が未接続 | Mac 側の旧 bond/登録、広告、再接続/認証。Fold6 OFF 条件と比較。 |
+| Mac が接続済みでも入力しない | USB を外したか、endpoint、HID 購読/通知。端末の接続表示と選択 profile・HID 成功を分ける。 |
 | Fold6 の文字のみOK | HID 再列挙、mouse CCC、descriptor/notify。キーボード report と分けて調べる。 |
 | 両側 reset＋端末登録削除で改善 | bond、GATT/HID キャッシュ、Studio 配置等が候補。ただし一括消去なので単一原因の証明にはならない。 |
 | 右の文字だけNG | split 接続、距離、省電力。ホスト接続とは分ける。 |
@@ -155,7 +152,7 @@ v0.3 は Zephyr 3.5系、比較対象 main は4.1系。以下はソース比較�
 | PAW3222 | 現在の torabo-tsuki branch は `0e1835c...`。標準 input API に加え Nordic SPIM/PSEL/GPIO を直接操作し MOSI/MISO 同ピンを扱う。Zephyr/nrfx 更新時にコンパイル、SPI 排他、電源・復帰の回帰リスク。汎用 PAW32xx に自動置換しない。 |
 | BMP Boost | 現行 v0.2 `7dc3f9e...` は HWMv1（Kconfig.board、board.yml なし）。新 Zephyr は HWMv2 が必要。upstream master `2f5567523b6f0bc39575d48ed746ed9d635edf8b` は board.yml/Kconfig.bmp_boost を持つので移行候補。board ID、flash/bootloader offset、UF2、GPIO、電池計測を検証。ZMK revision だけ更新する方法は不可。 |
 | ZMK Studio | v0.3 の左は Studio/RPC UART/RPC BLE が有効。新版では UART RX priority 等を追加。protocol、保存レイアウト、USB CDC、BLE 通信、復帰を検証。診断中は Studio 編集をしない。既存 LOCKING=n は維持。 |
-| USB trigger / battery / LED | 外部モジュールも4.1対応の組み合わせを検証。特に CDC デバイス取得/USB イベント、電池センサー binding。診断 LED 自体も新版で再ビルドする。 |
+| USB trigger / battery / LED | 外部モジュールも4.1対応の組み合わせを検証。特に CDC デバイス取得/USB イベント、電池センサー binding。通常 Status LED モジュールも新版で再ビルドする。 |
 | Actions | 新版用の別ブランチで reusable workflow と west の ZMK を対応させる。対応ビルドイメージも選ぶ。manifest だけ main にして workflow を v0.3 のまま混在させない。 |
 
 一次ソース:
@@ -167,14 +164,14 @@ v0.3 は Zephyr 3.5系、比較対象 main は4.1系。以下はソース比較�
 [BMP Boost HWMv2](https://github.com/sekigon-gonnoc/zmk-component-bmp-boost/blob/2f5567523b6f0bc39575d48ed746ed9d635edf8b/boards/arm/bmp_boost/board.yml) /
 [PAW3222](https://github.com/sekigon-gonnoc/zmk-driver-paw3222/blob/0e1835c57f88d215ce401b6d0901f361629621fc/src/paw3222.c)。
 
-## 変更ファイル
+## 現ブランチの変更内容
 
 | ファイル | 理由 |
 |---|---|
 | config/keymap.keymap | BT キーを4つに整理、AML と重ならない位置へ移動、F+G combo/OUT/巡回切替削除。 |
-| boards/shields/torabo_tsuki_lp/torabo_tsuki_lp_left.conf | 既定6/6と pointing を明示、左 LED 二重制御防止。 |
-| src/bt_diagnostics.c | profile と接続状態の非同期 LED 表示、ログフック。 |
-| CMakeLists.txt | 左 Central にだけ診断コードを組み込む。 |
+| boards/shields/torabo_tsuki_lp/torabo_tsuki_lp_left.conf | 既定6/6と pointing の明示を維持。LED は通常の Status LED に復元。 |
+| src/bt_diagnostics.c | 一度追加した診断専用コードを削除。 |
+| CMakeLists.txt | bt_diagnostics.c の組み込み条件を削除し、通常ソースだけに戻す。 |
 | build.yaml | 左 Central、右 Peripheral、reset の3種に限定・明確な名前。 |
 | .github/workflows/build.yml | v0.3 reusable workflow 維持、診断名/artifact 名、読み取り権限を明示。 |
 | config/west.yml | ZMK v0.3 維持。外部モジュールは未変更 baseline で解決した同じ SHA に固定し無関係な更新を防ぐ。 |
@@ -197,6 +194,13 @@ GitHub Actions の成功 run と出力は最終報告のリンクを参照。
 - 生成 devicetree: 全レイヤー66 binding、ベース/Layer 2/4/5 は変更前と同一。4つの BT キーと MO(1) は AML 4/5 を透過。
 - ELF 内の HID report descriptor のバイト列は変更前 baseline と同一。
 - 3 UF2 のブロック形式・個数・nRF52840 family ID を確認。
-- 左 UF2 523,776 bytes、右360,960 bytes、reset 96,256 bytes（ローカルビルド）。
+- 上記は初回診断版での確認。LED 復元後は3 target を改めてビルドし、左の通常 Status LED とバッテリー表示の有効化、Bluetooth 設定の不変を確認する。
 
-既存ソース由来の warning（NRF_STORE_REBOOT_TYPE_GPREGRET の非推奨、temp-layer の format/unused、reset keymap の初期化警告等）は存在する。診断 LED コードのコンパイルエラーはない。
+既存ソース由来の warning（NRF_STORE_REBOOT_TYPE_GPREGRET の非推奨、temp-layer の format/unused、reset keymap の初期化警告等）は存在する。これらの既存コードは LED 復元では変更していない。
+
+
+## 今回の LED 復元差分
+
+`fa4a0a9` を基準に、左 conf の Status LED 有効化、CMake の診断ソース登録削除、`src/bt_diagnostics.c` 削除、および本書/README の古い LED 説明だけを変更。
+`config/keymap.keymap`、`config/west.yml`、`build.yaml`、workflow、AML/trackball/split の設定・実装、右側設定は変更していない。
+SEL0=Mac、SEL1=Fold6、CLR/CLR_ALL、F+G combo と OUT キーの削除、Bluetooth 容量6/6などの診断ブランチの変更を維持する。
