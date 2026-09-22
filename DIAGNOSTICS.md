@@ -1,5 +1,7 @@
 # torabo-tsuki LP XS: Bluetooth 診断 / ZMK v0.3
 
+この文書は mini trackpad 追加前の診断・通常 LED 復元版の記録です。`feature/mini-trackpad-v0.3-20260923` では、この設定を保持したまま split input を追加しています。追加版の書き込み・確認は [MINI_TRACKPAD.md](MINI_TRACKPAD.md) を参照してください。今回の追加だけなら settings reset は不要です。
+
 対象: 左トラックボール付き Central / 右 Peripheral、Mac=Profile 0、Galaxy Z Fold6=Profile 1。
 元の master: `d2113dab4f9a1b684ab4454b5342ea60c2016e3b`。
 診断ブランチ: `diagnose/bluetooth-v0.3-20260922`。master へマージしない。

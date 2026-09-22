@@ -4,6 +4,10 @@
 * _centralがついているuf2をトラックボールがついている方に、_peripheralを反対側に書き込んでください
 * キーマップはkeymap-editorおよびzmk-studioで編集できます
 
+## 右 mini trackpad 追加版（ZMK v0.3）
+
+`feature/mini-trackpad-v0.3-20260923` は、通常 LED 復元済みの安定設定を基に、公式 snippet で右ミニトラックパッドのスクロールを有効化します。左右両方の通常 UF2 を更新してください。変更内容・確認手順は [MINI_TRACKPAD.md](MINI_TRACKPAD.md) を参照してください。
+
 ## Bluetooth 診断ブランチ（ZMK v0.3）
 
 左 Central / 右 Peripheral 専用。UF2、reset・再登録・往復試験、診断キーと通常 Status LED、ソース調査、新しい ZMK の互換性評価は [DIAGNOSTICS.md](DIAGNOSTICS.md) を参照してください。
