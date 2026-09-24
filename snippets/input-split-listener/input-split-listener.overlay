@@ -3,6 +3,19 @@
 #include "mini-trackpad-settings.h"
 
 /{
+    mini_scroll_inertia: mini_scroll_inertia {
+        compatible = "torabo,mini-scroll-inertia";
+        #input-processor-cells = <1>;
+        enabled = <MINI_TRACKPAD_INERTIA_ENABLED>;
+    };
+
+    // Synthetic coast events use a separate guarded listener, never the left ball.
+    mini_coast_listener: mini_coast_listener {
+        compatible = "zmk,input-listener";
+        device = <&mini_scroll_inertia>;
+        input-processors = <&mini_scroll_inertia 1>;
+    };
+
     // Non-scroller IQS7211E emits raw XY for one finger, but HWHEEL=X / WHEEL=-Y
     // for two fingers. Undo that Y sign before mapping to a common raw XY stream.
     mini_trackpad_scroll_to_xy: mini_trackpad_scroll_to_xy {
@@ -33,16 +46,19 @@
             <&mini_trackpad_scroll_to_xy>,
             <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
             <&zip_xy_to_scroll_mapper>,
-            <&zip_scroll_scaler MINI_TRACKPAD_SCROLL_MULTIPLIER MINI_TRACKPAD_SCROLL_DIVISOR>;
+            <&zip_scroll_scaler MINI_TRACKPAD_SCROLL_MULTIPLIER MINI_TRACKPAD_SCROLL_DIVISOR>,
+            <&mini_scroll_inertia 0>;
 
         mouse_layer {
             layers = <MINI_TRACKPAD_MOUSE_LAYER>;
             // No process-next: the scroll pipeline must not run in Mouse Layer.
             // Do not add zip_temp_layer here; right-pad input must not extend AML.
             input-processors =
+                <&mini_scroll_inertia 2>,
                 <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
                 <&mini_trackpad_scroll_to_xy>,
-                <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
+                // Previous cursor output inverted both axes. Removing that transform
+                // reverses BOTH axes relative to the tested firmware; scroll is unchanged.
                 <&zip_xy_scaler MINI_TRACKPAD_CURSOR_MULTIPLIER MINI_TRACKPAD_CURSOR_DIVISOR>;
         };
     };
