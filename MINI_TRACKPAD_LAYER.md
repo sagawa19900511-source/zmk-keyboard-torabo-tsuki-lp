@@ -1,5 +1,7 @@
 # 右 mini trackpad のレイヤー切替と感度調整
 
+この文書は Layer 4 連動版の記録です。独立 Layer 6・慣性比較版は [MINI_TRACKPAD_INDEPENDENT.md](MINI_TRACKPAD_INDEPENDENT.md) を参照してください。
+
 基準: 実機で正常動作した `feature/mini-trackpad-v0.3-20260923`、`c3289806cf1269c645535474e709c29dc66b9295`。
 今回のブランチ: `feature/mini-trackpad-layer-mouse-v0.3-20260924`。基準ブランチと master は変更しない。
 

@@ -10,3 +10,8 @@ include:
   - board: bmp_boost
     shield: settings_reset
     artifact-name: torabo_tsuki_lp_diag_v03_settings_reset
+  # A/B comparison: same keys and cursor mode, only Central inertia disabled.
+  - board: bmp_boost
+    shield: torabo_tsuki_lp_left
+    snippet: "studio-rpc-usb-uart split-central input-trackball input-listener input-split-listener mini-trackpad-inertia-off"
+    artifact-name: torabo_tsuki_lp_diag_v03_left_central_inertia_off
