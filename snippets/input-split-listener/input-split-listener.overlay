@@ -1,4 +1,17 @@
+#include <input/processors.dtsi>
+#include <dt-bindings/zmk/input_transform.h>
+#include "mini-trackpad-settings.h"
+
 /{
+    // Non-scroller IQS7211E emits raw XY for one finger, but HWHEEL=X / WHEEL=-Y
+    // for two fingers. Undo that Y sign before mapping to a common raw XY stream.
+    mini_trackpad_scroll_to_xy: mini_trackpad_scroll_to_xy {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        map = <INPUT_REL_HWHEEL INPUT_REL_X>, <INPUT_REL_WHEEL INPUT_REL_Y>;
+    };
+
     split_inputs {
         #address-cells = <1>;
         #size-cells = <0>;
@@ -13,6 +26,24 @@
         compatible = "zmk,input-listener";
         device = <&pointing_device_split>;
         status = "okay";
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
-     };
+        // Default: preserve the old scroller's -X/-Y direction, now on both axes.
+        // Scalars carry fractional remainders separately for this listener.
+        input-processors =
+            <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
+            <&mini_trackpad_scroll_to_xy>,
+            <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
+            <&zip_xy_to_scroll_mapper>,
+            <&zip_scroll_scaler MINI_TRACKPAD_SCROLL_MULTIPLIER MINI_TRACKPAD_SCROLL_DIVISOR>;
+
+        mouse_layer {
+            layers = <MINI_TRACKPAD_MOUSE_LAYER>;
+            // No process-next: the scroll pipeline must not run in Mouse Layer.
+            // Do not add zip_temp_layer here; right-pad input must not extend AML.
+            input-processors =
+                <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
+                <&mini_trackpad_scroll_to_xy>,
+                <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
+                <&zip_xy_scaler MINI_TRACKPAD_CURSOR_MULTIPLIER MINI_TRACKPAD_CURSOR_DIVISOR>;
+        };
+    };
 };
