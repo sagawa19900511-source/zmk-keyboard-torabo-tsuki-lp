@@ -1,5 +1,7 @@
 # 右 mini trackpad: 公式最小構成 / ZMK v0.3
 
+この文書は正常動作を確認したスクロール専用版の記録です。`feature/mini-trackpad-layer-mouse-v0.3-20260924` のレイヤー切替・1/2 倍設定・慣性無効化については [MINI_TRACKPAD_LAYER.md](MINI_TRACKPAD_LAYER.md) を参照してください。
+
 基準は通常 Status LED 復元済みの `diagnose/bluetooth-v0.3-20260922`、commit `97dc1f6aae605e5cd727180d2977e3b6587192b5`。
 作業ブランチは `feature/mini-trackpad-v0.3-20260923`。基準ブランチと master は変更しない。
 [公式手順](https://github.com/sekigon-gonnoc/torabo-tsuki-lp/blob/master/mini-trackpad-option.md)の3つの snippet を既存構成に追加する。
