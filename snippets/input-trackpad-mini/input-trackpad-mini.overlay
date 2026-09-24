@@ -16,6 +16,7 @@
         power-gpios = <&gpio0 8 (GPIO_ACTIVE_HIGH | NRF_GPIO_DRIVE_H1)>;
         init-symbol = "mini_trackpad_iqs7211e_init";
         init-length = <217>;
-        scroller-mode;
+        // Keep both raw axes: the Central listener chooses scroll or cursor by layer.
+        // Fixed scroller-mode discards one axis and cannot be reversed into free XY.
     };
 };
