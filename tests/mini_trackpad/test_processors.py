@@ -18,7 +18,7 @@ def chain(n):
  raw=nums(n.props['input-processors']);result=[]
  while raw:
   p=dt.phandle2node[raw.pop(0)];count=p.props['#input-processor-cells'].to_num();args=raw[:count];del raw[:count]
-  
+
   if p.props['compatible'].to_string() != 'torabo,mini-scroll-inertia':
    result.append((p,args+[0]*(2-count)))
  return result
