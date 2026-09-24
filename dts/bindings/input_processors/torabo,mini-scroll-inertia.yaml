@@ -1,0 +1,8 @@
+description: Right mini trackpad Central-only cancellable 2D scroll inertia
+compatible: "torabo,mini-scroll-inertia"
+include: ip_one_param.yaml
+properties:
+  enabled:
+    type: int
+    default: 1
+    enum: [0, 1]
