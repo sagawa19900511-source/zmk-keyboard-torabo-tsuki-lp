@@ -9,6 +9,7 @@
 
         layer_0 {
             // P: tap for P, hold for the independent right mini trackpad cursor (Layer 6).
+
             bindings = <
 &trans  &trans     &trans    &trans  &trans  &trans                                                 &trans       &trans            &trans     &trans    &trans                &trans
 &trans  &lt 4 Q    &kp W     &kp E   &kp R   &kp T                                                  &kp Y        &kp U             &kp I      &kp O     &lt 6 P               &trans
@@ -21,32 +22,33 @@
         layer_1 {
             // Hold the existing MO(1) key. A/S select Mac/Fold6; Y/U clear bonds.
             // These positions are transparent on auto-mouse layers 4 and 5.
+
             bindings = <
-&trans  &trans        &trans        &trans        &trans        &trans                        &trans      &trans          &trans  &trans  &trans  &trans
-&trans  &trans        &trans        &trans        &trans        &trans                        &bt BT_CLR  &bt BT_CLR_ALL  &trans  &trans  &trans  &trans
-&trans  &bt BT_SEL 0  &bt BT_SEL 1  &trans        &trans        &trans        &trans  &trans  &trans      &trans          &trans  &trans  &trans  &trans
-&trans  &trans        &trans        &trans        &trans        &trans        &trans  &trans  &trans      &trans          &trans  &trans  &trans  &trans
-&trans  &trans        &trans        &trans        &trans        &trans        &trans  &trans  &trans      &trans          &trans  &trans  &trans  &trans
+&trans  &trans        &trans        &trans  &trans  &trans                  &trans      &trans          &trans  &trans  &trans  &trans
+&trans  &trans        &trans        &trans  &trans  &trans                  &bt BT_CLR  &bt BT_CLR_ALL  &trans  &trans  &trans  &trans
+&trans  &bt BT_SEL 0  &bt BT_SEL 1  &trans  &trans  &trans  &trans  &trans  &trans      &trans          &trans  &trans  &trans  &trans
+&trans  &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans      &trans          &trans  &trans  &trans  &trans
+&trans  &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans      &trans          &trans  &trans  &trans  &trans
             >;
         };
 
         layer_2 {
             bindings = <
-&trans  &trans         &trans          &trans          &trans            &trans                     &trans     &trans        &trans        &trans        &trans        &trans
-&trans  &trans         &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT         &kp MINUS                  &kp N0     &kp N7        &kp N8        &kp N9        &kp PLUS      &trans
-&trans  &kp LA(GRAVE)  &trans          &kp DOWN_ARROW  &trans            &trans     &trans  &trans  &kp EQUAL  &kp NUMBER_4  &kp N5        &kp NUMBER_6  &kp MINUS     &trans
-&trans  &trans         &trans          &kp LESS_THAN   &kp GREATER_THAN  &trans     &trans  &trans  &trans     &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp ASTERISK  &trans
-&trans  &trans         &trans          &trans          &trans            &trans     &trans  &trans  &kp TAB    &kp DEL       &trans        &trans        &kp SLASH     &trans
+&trans  &trans             &trans          &trans          &trans            &trans                     &trans     &trans        &trans        &trans        &trans        &trans
+&trans  &trans             &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT         &kp MINUS                  &kp N0     &kp N7        &kp N8        &kp N9        &kp PLUS      &trans
+&trans  &kp LA(GRAVE)      &trans          &kp DOWN_ARROW  &trans            &kp AT     &trans  &trans  &kp EQUAL  &kp NUMBER_4  &kp N5        &kp NUMBER_6  &kp MINUS     &trans
+&trans  &kp LS(LA(LC(M)))  &trans          &kp LESS_THAN   &kp GREATER_THAN  &trans     &trans  &trans  &kp UNDER  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp ASTERISK  &trans
+&trans  &trans             &trans          &trans          &trans            &trans     &trans  &trans  &kp TAB    &kp DEL       &trans        &trans        &kp SLASH     &trans
             >;
         };
 
         layer_3 {
             bindings = <
-&trans  &trans   &trans   &trans        &trans        &trans                      &trans            &trans     &trans         &trans     &trans      &trans
-&trans  &kp F1   &kp F2   &kp F3        &kp F4        &kp F5                      &kp HOME          &kp PG_UP  &kp PAGE_DOWN  &kp END    &kp ESCAPE  &trans
-&trans  &kp F6   &kp F7   &kp F8        &kp F9        &kp F10     &trans  &trans  &kp LEFT          &kp DOWN   &kp UP_ARROW   &kp RIGHT  &kp TAB     &trans
-&trans  &kp F11  &kp F12  &none         &none         &none       &trans  &trans  &kp SINGLE_QUOTE  &kp DQT    &kp GRAVE      &kp TILDE  &kp PIPE    &trans
-&trans  &trans   &trans   &trans        &kp DELETE    &kp TAB     &trans  &trans  &trans            &trans     &trans         &trans     &trans      &trans
+&trans  &trans   &trans   &trans  &trans      &trans                   &trans            &trans     &trans         &trans     &trans      &trans
+&trans  &kp F1   &kp F2   &kp F3  &kp F4      &kp F5                   &kp HOME          &kp PG_UP  &kp PAGE_DOWN  &kp END    &kp ESCAPE  &trans
+&trans  &kp F6   &kp F7   &kp F8  &kp F9      &kp F10  &trans  &trans  &kp LEFT          &kp DOWN   &kp UP_ARROW   &kp RIGHT  &kp TAB     &trans
+&trans  &kp F11  &kp F12  &none   &none       &none    &trans  &trans  &kp SINGLE_QUOTE  &kp DQT    &kp GRAVE      &kp TILDE  &kp PIPE    &trans
+&trans  &trans   &trans   &trans  &kp DELETE  &kp TAB  &trans  &trans  &trans            &trans     &trans         &trans     &trans      &trans
             >;
         };
 
@@ -69,14 +71,15 @@
 &trans  &trans  &trans     &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
+
         layer_6 {
             display-name = "Mini Trackpad Mouse";
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
     };
