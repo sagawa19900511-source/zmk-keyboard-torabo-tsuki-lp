@@ -1,4 +1,4 @@
-/* Right-pad-only inertia math/state. No ZMK, Bluetooth, sensor or HID dependencies. */
+/* Shared inertia math with separate state for each sensor. No ZMK, Bluetooth, sensor or HID dependencies. */
 #pragma once
 #include <stdbool.h>
 #include <stdint.h>
