@@ -4,6 +4,22 @@
 #include <dt-bindings/zmk/pointing.h>
 
 / {
+    behaviors {
+        manual_mouse: manual_mouse {
+            compatible = "torabo,behavior-manual-mouse";
+            #binding-cells = <1>;
+        };
+
+        manual_mouse_lt: manual_mouse_lt {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            display-name = "Mouse Layer-Tap";
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&manual_mouse>, <&kp>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -12,10 +28,10 @@
 
             bindings = <
 &trans  &trans     &trans    &trans  &trans  &trans                                                 &trans       &trans            &trans     &trans    &trans                &trans
-&trans  &lt 4 Q    &kp W     &kp E   &kp R   &kp T                                                  &kp Y        &kp U             &kp I      &kp O     &lt 6 P               &trans
+&trans  &manual_mouse_lt 4 Q    &kp W     &kp E   &kp R   &kp T                                                  &kp Y        &kp U             &kp I      &kp O     &lt 6 P               &trans
 &trans  &kp A      &kp S     &kp D   &kp F   &kp G        &trans                     &trans         &kp H        &kp J             &kp K      &kp L     &kp SEMI              &trans
 &trans  &kp Z      &kp X     &kp C   &kp V   &kp B        &mo 1                      &kp RET        &kp N        &kp M             &kp COMMA  &kp DOT   &mt RIGHT_SHIFT FSLH  &trans
-&trans  &kp LCTRL  &kp LGUI  &trans  &trans  &lt 2 SPACE  &mt LEFT_SHIFT LANGUAGE_1  &kp BACKSPACE  &lt 4 ENTER  &lt 2 LANGUAGE_2  &kp RALT   &kp RGUI  &kp RCTRL             &trans
+&trans  &kp LCTRL  &kp LGUI  &trans  &trans  &lt 2 SPACE  &mt LEFT_SHIFT LANGUAGE_1  &kp BACKSPACE  &manual_mouse_lt 4 ENTER  &lt 2 LANGUAGE_2  &kp RALT   &kp RGUI  &kp RCTRL             &trans
             >;
         };
 
