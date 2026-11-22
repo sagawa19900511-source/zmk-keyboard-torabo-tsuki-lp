@@ -1,0 +1,8 @@
+description: Cancellable scroll inertia for the left trackball's scroll layer
+compatible: "torabo,ball-scroll-inertia"
+include: ip_one_param.yaml
+properties:
+  enabled:
+    type: int
+    default: 1
+    enum: [0, 1]
