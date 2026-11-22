@@ -1,17 +1,39 @@
 #include "torabo_tsuki_lp.dtsi"
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
+#include "ball-scroll-settings.h"
+
+/ {
+    ball_scroll_inertia: ball_scroll_inertia {
+        compatible = "torabo,ball-scroll-inertia";
+        #input-processor-cells = <1>;
+        enabled = <TORABO_BALL_INERTIA_ENABLED>;
+    };
+
+    ball_coast_listener {
+        compatible = "zmk,input-listener";
+        device = <&ball_scroll_inertia>;
+        input-processors = <&ball_scroll_inertia 2>;
+    };
+
+    ball_aml: ball_aml {
+        compatible = "torabo,ball-aml";
+        #input-processor-cells = <2>;
+    };
+};
 
 &pointing_listener {
     scroll_layer {
-        layers = <5>;
+        layers = <TORABO_BALL_SCROLL_LAYER>;
         input-processors =
+            <&ball_scroll_inertia 0>,
             <&zip_xy_to_scroll_mapper>,
             <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
-            <&zip_scroll_scaler 1 40>;
+            <&zip_scroll_scaler 1 40>,
+            <&ball_scroll_inertia 1>;
     };
 
     input-processors =
         <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
-        <&zip_temp_layer 4 2000>;
+        <&ball_aml 4 2000>;
 };
