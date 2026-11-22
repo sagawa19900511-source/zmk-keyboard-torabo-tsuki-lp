@@ -1,0 +1,3 @@
+description: Hold the Torabo mouse layer independently of the automatic timeout
+compatible: "torabo,behavior-manual-mouse"
+include: one_param.yaml
